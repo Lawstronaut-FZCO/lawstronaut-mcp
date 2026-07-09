@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.lawstronaut/lawstronaut-mcp",
+  "title": "Lawstronaut",
+  "description": "Connect AI to millions of laws and court cases with the Lawstronaut MCP.",
+  "version": "1.1.1",
+  "websiteUrl": "https://lawstronaut.com",
+  "repository": {
+    "url": "https://github.com/Lawstronaut-FZCO/lawstronaut-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+    "type": "streamable-http",
+    "url": "https://mcp.lawstronaut.com"
+    }
+  ]
+}
