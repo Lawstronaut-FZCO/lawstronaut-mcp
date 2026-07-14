@@ -1,0 +1,14 @@
+{
+    "name": "lawstronaut",
+    "version": "1.1.1",
+    "description": "Connect AI to millions of laws and court cases with the Lawstronaut MCP.",
+    "contextFileName": "GEMINI.md",
+    "mcpServers": {
+      "lawstronaut": {
+        "transport": {
+          "type": "http",
+          "url": "https://mcp.lawstronaut.com"
+        }
+      }
+    }
+  }

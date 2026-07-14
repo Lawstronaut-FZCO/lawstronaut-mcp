@@ -8,7 +8,8 @@ Connect [lawstronaut](https://mcp.lawstronaut.com) to Claude, ChatGPT, Cursor, a
 
 [![Model Context Protocol](https://img.shields.io/badge/MCP-compatible-7137FF)](https://modelcontextprotocol.io)
 [![Auth](https://img.shields.io/badge/auth-OAuth_2.0_-10A37F)](#authentication--scopes)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![Documentation](https://img.shields.io/badge/documentation-latest-7137FF)](https://lawstronaut.com/products/lawstronaut-mcp)
+[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red)](./LICENSE)
 
  [Authentication](#Authentication) . [Setup](#setup) · [Tools](#tools)
 
