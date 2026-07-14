@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="./assets/logo.png" width="96" alt="lawstronaut logo" />
+<img src="./assets/lawstronaut-icon.png" width="100" alt="lawstronaut logo" />
 
-# Lawstronaut MCP Server
+# Lawstronaut MCP
 
 Connect [lawstronaut](https://mcp.lawstronaut.com) to Claude, ChatGPT, Cursor, and any AI agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io). Connect your AI to 50+ million laws and court cases!
 
@@ -34,16 +34,25 @@ Public server card (tool listing, no auth):
 
 
 
-Lawstronaut MCP supports **Bearer token** and **OAuth 2.0** (`client_id` + `client_secret`).
+Lawstronaut MCP supports **Bearer token** and **OAuth 2.0** (`client_id` + `client_secret`). A paid subscription is required.
 
 | Method | Best for | Tool listing | Tool calls |
 |--------|----------|--------------|------------|
 | Bearer token | CLI, scripts, clients without OAuth | No auth required | `Authorization: Bearer <token>` |
 | OAuth 2.0 | Cursor, VS Code, Claude, publishing platforms | No auth required | OAuth access token (auto-managed by client) |
 
+### Get client ID, secret, or bearer token
+
+1. Visit [lawstronaut.com](https://lawstronaut.com) and purchase a subscription.
+2. Log in to the [developer portal](https://dev-portal.filerskeepersapi.co/).
+3. Open **MCP server access** from the Home menu.
+4. Create a **client ID** + **client secret** (OAuth) or a **bearer token**.
+
+<img src="./assets/generate-client-secret.png" width="800" alt="lawstronaut logo" />
+
 ### Option A — Bearer token
 
-Use your Lawstronaut API key / bearer token:
+Use the bearer token from **MCP server access**:
 
 ```http
 Authorization: Bearer <your-token>
@@ -59,7 +68,7 @@ Example configs: `cursor-mcp.json`, `vscode-mcp.json`, `claude-code.mcp.json`.
 
 ### Option B — OAuth 2.0 (client_id + client_secret)
 
-Register your integration with Lawstronaut to receive `client_id` and `client_secret`.
+Use the `client_id` and `client_secret` created under **MCP server access** in the [developer portal](https://dev-portal.filerskeepersapi.co/).
 
 | Endpoint | URL |
 |----------|-----|
