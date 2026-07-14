@@ -152,6 +152,10 @@ Docs: [Connect Claude Code to tools via MCP](https://code.claude.com/docs/en/mcp
 
 Claude Desktop is oriented toward **stdio** MCP servers. For this HTTP server, use **Cursor**, **VS Code**, or **Claude Code**, or any host that supports remote Streamable HTTP MCP.
 
+Go to **Customize**, **Connectors**, click "**+**", **Add Custom Connector**, and fill the dialog:
+
+<img src="./assets/claude.png" width="800" alt="claude" />
+
 ---
 
 ## Other hosts (Continue, Zed, custom agents, etc.)
