@@ -154,7 +154,7 @@ Claude Desktop is oriented toward **stdio** MCP servers. For this HTTP server, u
 
 Go to **Customize**, **Connectors**, click "**+**", **Add Custom Connector**, and fill the dialog:
 
-<img src="./assets/claude.png" width="800" alt="claude" />
+<img src="./assets/claude-desktop.png" width="790" alt="claude" />
 
 ---
 
