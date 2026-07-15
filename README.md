@@ -170,24 +170,165 @@ Any client that supports **MCP Streamable HTTP** can connect with:
 
 ## Tools
 
-| Tool | Description | Scope |
-|------|-------------|-------|
-| `list_jurisdictions` | List all jurisdictions (countries/states) in the Lawstronaut corpus — call first to get valid ISO codes for other tools. | `mcp:tools:read` |
-| `list_domains` | List legal domains with optional name filter and pagination. | `mcp:tools:read` |
-| `list_subdomains` | List subdomains for a domain ID — filter by name, paginate results. | `mcp:tools:read` |
-| `list_categories` | List legal categories for a subdomain — filter by name, paginate results. | `mcp:tools:read` |
-| `list_subcategories` | List subcategories for a category ID — filter by name, paginate results. | `mcp:tools:read` |
-| `list_law_types` | List law types for a subcategory ID — filter by name, paginate results. | `mcp:tools:read` |
-| `list_portals` | List legal portals for a jurisdiction — filter by name, language, or tag. | `mcp:tools:read` |
-| `list_authority_types` | List authority types for a jurisdiction — filter by portal or authority type. | `mcp:tools:read` |
-| `list_issuing_authorities` | List issuing authorities for a jurisdiction — filter by portal or authority name. | `mcp:tools:read` |
-| `list_documents` | List legal documents in a jurisdiction — filter by title, dates, portal, status, tags, and more. | `mcp:tools:read` |
-| `get_document_text` | Get full text of documents matching jurisdiction and filter criteria. | `mcp:tools:read` |
-| `get_markdown` | Get document body as markdown for matching jurisdiction and filters. | `mcp:tools:read` |
-| `get_source_url` | Get a time-limited signed URL to the original source file (PDF, etc.). | `mcp:tools:read` |
-| `get_document_with_version` | Get a specific document at a specific version with full metadata. | `mcp:tools:read` |
-| `horizon_scan` | Scan recent legal changes in a jurisdiction — filter by topic, date window, and authority. | `mcp:tools:read` |
-| `evidence_pull` | Get full citation chain for a document — metadata, legal link, source URL, and body text. | `mcp:tools:read` |
+- **list_jurisdictions** - List all jurisdictions (countries/states) in the Lawstronaut corpus — call first to get valid ISO codes for other tools
+
+- **list_domains** - List legal domains with optional name filter and pagination
+  - `domain`: Filter domains by name (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+
+- **list_subdomains** - List subdomains for a domain ID — filter by name, paginate results
+  - `domain_id`: Filter by Domain ID (string, required)
+  - `subdomain`: Filter subdomains by name (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+
+- **list_categories** - List legal categories for a subdomain — filter by name, paginate results
+  - `subdomain_id`: Filter by Subdomain ID (string, optional)
+  - `category_name`: Filter categories by name (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+
+- **list_subcategories** - List subcategories for a category ID — filter by name, paginate results
+  - `category_id`: Filter by Category ID (string, required)
+  - `subcategory_name`: Filter subcategories by name (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+
+- **list_law_types** - List law types for a subcategory ID — filter by name, paginate results
+  - `subcategory_id`: Filter by Subcategory ID (string, required)
+  - `law_type`: Filter law types by name (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+
+- **list_portals** - List legal portals for a jurisdiction — filter by name, language, or tag
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `name`: Filter portals by name (string, optional)
+  - `tag`: Filter by tag (string, optional)
+  - `lang`: Filter by language (string, optional)
+
+- **list_authority_types** - List authority types for a jurisdiction — filter by portal or authority type
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+  - `portal_name`: Filter by portal name (string, optional)
+  - `authority_type`: Filter by authority type (string, optional)
+
+- **list_issuing_authorities** - List issuing authorities for a jurisdiction — filter by portal or authority name
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+  - `portal_name`: Filter by portal name (string, optional)
+  - `issuing_authority`: Filter by issuing authority (string, optional)
+
+- **list_documents** - List legal documents in a jurisdiction — filter by title, dates, portal, status, tags, and more
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `portal`: Filter by portal name (string, optional)
+  - `version`: Document version (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+  - `document_id`: Document ID (string, optional)
+  - `repealed`: Filter by repealed status (boolean, optional)
+  - `title`: Filter by title (string, optional)
+  - `section_title`: Filter by section title (string, optional)
+  - `url`: Filter by URL (string, optional)
+  - `status`: Filter by status (string, optional)
+  - `crawling_date`: Filter by crawling date (string, optional)
+  - `last_updated`: Filter by last updated date (string, optional)
+  - `last_amendment`: Filter by last amendment date (string, optional)
+  - `publication_date`: Filter by publication date (string, optional)
+  - `expiration_date`: Filter by expiration date (string, optional)
+  - `effective_date`: Filter by effective date (string, optional)
+  - `date_of_enactment`: Filter by date of enactment (string, optional)
+  - `date_of_decision`: Filter by date of decision (string, optional)
+  - `file_data_only`: Return only file-related data (boolean, optional)
+  - `issuing_authority`: Filter by issuing authority (string, optional)
+  - `type_of_authority`: Filter by type of authority (string, optional)
+  - `source_identifier`: Filter by source identifier (string, optional)
+  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
+  - `tag`: Filter by tag (string, optional)
+  - `lang`: Filter by language (string, optional)
+
+- **get_document_text** - Get full text of documents matching jurisdiction and filter criteria
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `portal`: Filter by portal name (string, optional)
+  - `version`: Document version (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+  - `document_id`: Document ID (string, optional)
+  - `repealed`: Filter by repealed status (boolean, optional)
+  - `title`: Filter by title (string, optional)
+  - `section_title`: Filter by section title (string, optional)
+  - `url`: Filter by URL (string, optional)
+  - `status`: Filter by status (string, optional)
+  - `crawling_date`: Filter by crawling date (string, optional)
+  - `last_updated`: Filter by last updated date (string, optional)
+  - `last_amendment`: Filter by last amendment date (string, optional)
+  - `publication_date`: Filter by publication date (string, optional)
+  - `expiration_date`: Filter by expiration date (string, optional)
+  - `effective_date`: Filter by effective date (string, optional)
+  - `date_of_enactment`: Filter by date of enactment (string, optional)
+  - `date_of_decision`: Filter by date of decision (string, optional)
+  - `file_data_only`: Return only file-related data (boolean, optional)
+  - `issuing_authority`: Filter by issuing authority (string, optional)
+  - `type_of_authority`: Filter by type of authority (string, optional)
+  - `source_identifier`: Filter by source identifier (string, optional)
+  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
+  - `tag`: Filter by tag (string, optional)
+  - `lang`: Filter by language (string, optional)
+
+- **get_markdown** - Get document body as markdown for matching jurisdiction and filters
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `portal`: Filter by portal name (string, optional)
+  - `version`: Document version (string, optional)
+  - `limit`: Number of results to return (number, optional)
+  - `offset`: Number of results to skip (number, optional)
+  - `document_id`: Document ID (string, optional)
+  - `repealed`: Filter by repealed status (boolean, optional)
+  - `title`: Filter by title (string, optional)
+  - `section_title`: Filter by section title (string, optional)
+  - `url`: Filter by URL (string, optional)
+  - `status`: Filter by status (string, optional)
+  - `crawling_date`: Filter by crawling date (string, optional)
+  - `last_updated`: Filter by last updated date (string, optional)
+  - `last_amendment`: Filter by last amendment date (string, optional)
+  - `publication_date`: Filter by publication date (string, optional)
+  - `expiration_date`: Filter by expiration date (string, optional)
+  - `effective_date`: Filter by effective date (string, optional)
+  - `date_of_enactment`: Filter by date of enactment (string, optional)
+  - `date_of_decision`: Filter by date of decision (string, optional)
+  - `file_data_only`: Return only file-related data (boolean, optional)
+  - `issuing_authority`: Filter by issuing authority (string, optional)
+  - `type_of_authority`: Filter by type of authority (string, optional)
+  - `source_identifier`: Filter by source identifier (string, optional)
+  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
+  - `tag`: Filter by tag (string, optional)
+  - `lang`: Filter by language (string, optional)
+
+- **get_source_url** - Get a time-limited signed URL to the original source file (PDF, etc.)
+  - `document_id`: Document ID (integer, required)
+
+- **get_document_with_version** - Get a specific document at a specific version with full metadata
+  - `document_id`: Document ID (integer, required)
+  - `version`: Version (integer, required)
+
+- **horizon_scan** - Scan recent legal changes in a jurisdiction — filter by topic, date window, and authority
+  - `iso`: One ISO code e.g. "IE", "NL", "US", etc (string, required)
+  - `since`: Start of date window for the scan (string, optional)
+  - `topic`: Topic or keyword to focus the scan (string, optional)
+  - `date_field`: Which date field to use for the window (string, optional)
+  - `status`: Filter by status (string, optional)
+  - `issuing_authority`: Filter by issuing authority (string, optional)
+  - `type_of_authority`: Filter by type of authority (string, optional)
+  - `include_repealed`: Include repealed documents (boolean, optional)
+  - `max_per_jurisdiction`: Maximum results per jurisdiction (integer, optional)
+
+- **evidence_pull** - Get full citation chain for a document — metadata, legal link, source URL, and body text
+  - `iso`: Document's jurisdiction ISO code, e.g. 'IE', 'NL', 'US', etc (string, required)
+  - `document_id`: Numeric document_id from any listing/search tool (integer, required)
+  - `include_text`: Include document body text (boolean, optional)
+  - `include_source_url`: Include signed source URL (boolean, optional)
+  - `text_format`: Format for included text (e.g. markdown or plain) (string, optional)
 
 All tools are read-only. OAuth tokens are issued with scope `mcp:tools:read`. Tool listing is public; tool calls require authentication.
 
