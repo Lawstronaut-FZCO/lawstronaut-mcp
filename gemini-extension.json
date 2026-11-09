@@ -1,6 +1,6 @@
 {
     "name": "lawstronaut",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Access real-time global legislation, case law and more through Lawstronaut Legal Research",
     "mcpServers": {
       "lawstronaut": {

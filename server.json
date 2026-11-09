@@ -3,7 +3,7 @@
   "name": "com.lawstronaut/lawstronaut-mcp",
   "title": "Lawstronaut",
   "description": "Connect AI to millions of laws and court cases with the Lawstronaut MCP.",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "websiteUrl": "https://lawstronaut.com",
   "repository": {
     "url": "https://github.com/Lawstronaut-FZCO/lawstronaut-mcp",

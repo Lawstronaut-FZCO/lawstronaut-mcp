@@ -2,9 +2,9 @@
 
 <img src="./assets/lawstronaut-icon.png" width="100" alt="lawstronaut logo" />
 
-# Lawstronaut MCP
+# Lawstronaut MCP 2.0
 
-Connect [lawstronaut](https://mcp.lawstronaut.com) to Claude, ChatGPT, Cursor, and any AI agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io). Connect your AI to 50+ million laws and court cases!
+Connect [lawstronaut](https://mcp.lawstronaut.com) to Claude, ChatGPT, Cursor, and any AI agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io). Connect your AI to 115+ million laws and court cases!
 
 [![Model Context Protocol](https://img.shields.io/badge/MCP-compatible-7137FF)](https://modelcontextprotocol.io)
 [![Auth](https://img.shields.io/badge/auth-OAuth_2.0_-10A37F)](#authentication--scopes)
@@ -170,165 +170,190 @@ Any client that supports **MCP Streamable HTTP** can connect with:
 
 ## Tools
 
-- **list_jurisdictions** - List all jurisdictions (countries/states) in the Lawstronaut corpus — call first to get valid ISO codes for other tools
+- **list_jurisdictions** — List every country and state in the authenticated subscription (name, iso, type, documents_count). Call first to get valid ISO codes. Takes no parameters.
 
-- **list_domains** - List legal domains with optional name filter and pagination
-  - `domain`: Filter domains by name (string, optional)
+- **list_domains** — List top-level legal domains (id, domain_id, domain). Pass `domain_id` to `list_subdomains`.
+  - `domain`: Filter by domain name (string, optional)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next ID to paginate the results (number, optional)
 
-- **list_subdomains** - List subdomains for a domain ID — filter by name, paginate results
+- **list_subdomains** — List subdomains under one domain. Pass `subdomain_id` to `list_categories`.
   - `domain_id`: Filter by Domain ID (string, required)
-  - `subdomain`: Filter subdomains by name (string, optional)
+  - `subdomain`: Filter by subdomain name (string, optional)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next ID to paginate the results (number, optional)
 
-- **list_categories** - List legal categories for a subdomain — filter by name, paginate results
+- **list_categories** — List categories under one subdomain. Pass `category_id` to `list_subcategories`.
   - `subdomain_id`: Filter by Subdomain ID (string, optional)
-  - `category_name`: Filter categories by name (string, optional)
+  - `category_name`: Filter by category name (string, optional)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next ID to paginate the results (number, optional)
 
-- **list_subcategories** - List subcategories for a category ID — filter by name, paginate results
+- **list_subcategories** — List subcategories under one category. Pass `subcategory_id` to `list_law_types`.
   - `category_id`: Filter by Category ID (string, required)
-  - `subcategory_name`: Filter subcategories by name (string, optional)
+  - `subcategory_name`: Filter by subcategory name (string, optional)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next ID to paginate the results (number, optional)
 
-- **list_law_types** - List law types for a subcategory ID — filter by name, paginate results
+- **list_law_types** — List law types under one subcategory. Last taxonomy step; does not return documents.
   - `subcategory_id`: Filter by Subcategory ID (string, required)
-  - `law_type`: Filter law types by name (string, optional)
+  - `law_type`: Filter by law type name (string, optional)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next ID to paginate the results (number, optional)
 
-- **list_portals** - List legal portals for a jurisdiction — filter by name, language, or tag
-  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
-  - `name`: Filter portals by name (string, optional)
-  - `tag`: Filter by tag (string, optional)
-  - `lang`: Filter by language (string, optional)
+- **list_portals** — List source portals for a jurisdiction. Filter by name, tag, language, or portal ID.
+  - `iso`: Jurisdiction code from `list_jurisdictions` (e.g. `BE`, or `US_CA` for a state) (string, required)
+  - `name`: Case-insensitive substring of the portal name (string, optional)
+  - `portal_tags`: Exact portal tag; the portal must include this tag (string, optional)
+  - `lang`: Exact language name, e.g. English (string, optional)
+  - `portal_id`: Portal ID (number, optional)
+  - `limit`: Number of portals to return (number, optional)
+  - `next_id`: Next portal ID to return (number, optional)
+  - `advanced_search`: Advanced search enabled (boolean, required, default `false`)
 
-- **list_authority_types** - List authority types for a jurisdiction — filter by portal or authority type
+- **list_authority_types** — List authority types for a jurisdiction. Filter by portal name or authority type.
   - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next portal ID to return (number, optional)
   - `portal_name`: Filter by portal name (string, optional)
   - `authority_type`: Filter by authority type (string, optional)
 
-- **list_issuing_authorities** - List issuing authorities for a jurisdiction — filter by portal or authority name
+- **list_issuing_authorities** — List issuing authorities for a jurisdiction. Filter by portal name or authority name.
   - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
   - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
+  - `next_id`: Next issuing authority ID to return (number, optional)
   - `portal_name`: Filter by portal name (string, optional)
   - `issuing_authority`: Filter by issuing authority (string, optional)
 
-- **list_documents** - List legal documents in a jurisdiction — filter by title, dates, portal, status, tags, and more
+- **list_documents** — List document metadata in a jurisdiction (title, dates, source, classification). Does not return the body, a citation bundle, or a source-file URL.
   - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Page size. Default 20, maximum 100 (integer, optional)
   - `portal`: Filter by portal name (string, optional)
-  - `version`: Document version (string, optional)
-  - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
-  - `document_id`: Document ID (string, optional)
-  - `repealed`: Filter by repealed status (boolean, optional)
+  - `portal_id`: Filter by portal ID (number, optional)
+  - `lang`: Exact portal language name, for example English. Filters the portal, not the document language (string, optional)
+  - `status`: Filter by document status (string, optional)
+  - `url`: Filter by document URL (string, optional)
+  - `is_repealed`: Filter by repealed documents (boolean, required, default `false`)
+  - `crawling_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_updated`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_amendment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `publication_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `expiration_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `effective_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `date_of_enactment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `uuid`: Filter by UUID (string, optional)
+  - `next_id`: Document id of the first row of the next page, from `pagination.next_id`. Omit on the first page (number, optional)
+  - `include_total`: Include total count in the response (boolean, required, default `false`)
   - `title`: Filter by title (string, optional)
+  - `version`: Filter by version (string, optional)
   - `section_title`: Filter by section title (string, optional)
-  - `url`: Filter by URL (string, optional)
-  - `status`: Filter by status (string, optional)
-  - `crawling_date`: Filter by crawling date (string, optional)
-  - `last_updated`: Filter by last updated date (string, optional)
-  - `last_amendment`: Filter by last amendment date (string, optional)
-  - `publication_date`: Filter by publication date (string, optional)
-  - `expiration_date`: Filter by expiration date (string, optional)
-  - `effective_date`: Filter by effective date (string, optional)
-  - `date_of_enactment`: Filter by date of enactment (string, optional)
-  - `date_of_decision`: Filter by date of decision (string, optional)
-  - `file_data_only`: Return only file-related data (boolean, optional)
+  - `date_of_decision`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `file_data_only`: `false` returns documents with and without file metadata. `true` returns only documents with file metadata (boolean, required, default `false`)
   - `issuing_authority`: Filter by issuing authority (string, optional)
   - `type_of_authority`: Filter by type of authority (string, optional)
   - `source_identifier`: Filter by source identifier (string, optional)
   - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
-  - `tag`: Filter by tag (string, optional)
-  - `lang`: Filter by language (string, optional)
+  - `tag`: Filter by portal tag (string, optional)
+  - `issuing_authority_tags`: Filter by issuing authority tags (array of strings, optional)
 
-- **get_document_text** - Get full text of documents matching jurisdiction and filter criteria
+- **list_full_text** — Return the plain-text body of matching documents (`id`, `uuid`, `version`, `text`). No Markdown structure and no citation metadata.
   - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Page size. Default 20, maximum 100 (integer, optional)
   - `portal`: Filter by portal name (string, optional)
-  - `version`: Document version (string, optional)
-  - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
-  - `document_id`: Document ID (string, optional)
-  - `repealed`: Filter by repealed status (boolean, optional)
+  - `portal_id`: Filter by portal ID (number, optional)
+  - `lang`: Exact portal language name, for example English. Filters the portal, not the document language (string, optional)
+  - `status`: Filter by document status (string, optional)
+  - `url`: Filter by document URL (string, optional)
+  - `is_repealed`: Filter by repealed documents (boolean, required, default `false`)
+  - `crawling_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_updated`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_amendment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `publication_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `expiration_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `effective_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `date_of_enactment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `uuid`: Filter by UUID (string, optional)
+  - `next_id`: Document id of the first row of the next page, from `pagination.next_id`. Omit on the first page (number, optional)
+  - `include_total`: Include total count in the response (boolean, required, default `false`)
   - `title`: Filter by title (string, optional)
-  - `section_title`: Filter by section title (string, optional)
-  - `url`: Filter by URL (string, optional)
-  - `status`: Filter by status (string, optional)
-  - `crawling_date`: Filter by crawling date (string, optional)
-  - `last_updated`: Filter by last updated date (string, optional)
-  - `last_amendment`: Filter by last amendment date (string, optional)
-  - `publication_date`: Filter by publication date (string, optional)
-  - `expiration_date`: Filter by expiration date (string, optional)
-  - `effective_date`: Filter by effective date (string, optional)
-  - `date_of_enactment`: Filter by date of enactment (string, optional)
-  - `date_of_decision`: Filter by date of decision (string, optional)
-  - `file_data_only`: Return only file-related data (boolean, optional)
-  - `issuing_authority`: Filter by issuing authority (string, optional)
-  - `type_of_authority`: Filter by type of authority (string, optional)
-  - `source_identifier`: Filter by source identifier (string, optional)
-  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
-  - `tag`: Filter by tag (string, optional)
-  - `lang`: Filter by language (string, optional)
+  - `with_empty_data`: Include documents that have no stored plain text (`text` is null). Default omits them (boolean, required, default `false`)
 
-- **get_markdown** - Get document body as markdown for matching jurisdiction and filters
+- **list_markdown** — Return the structured Markdown body of matching documents (`id`, `uuid`, `version`, `markdown`). Headings and lists stay intact.
   - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Page size. Default 20, maximum 100 (integer, optional)
   - `portal`: Filter by portal name (string, optional)
-  - `version`: Document version (string, optional)
-  - `limit`: Number of results to return (number, optional)
-  - `offset`: Number of results to skip (number, optional)
-  - `document_id`: Document ID (string, optional)
-  - `repealed`: Filter by repealed status (boolean, optional)
+  - `portal_id`: Filter by portal ID (number, optional)
+  - `lang`: Exact portal language name, for example English. Filters the portal, not the document language (string, optional)
+  - `status`: Filter by document status (string, optional)
+  - `url`: Filter by document URL (string, optional)
+  - `is_repealed`: Filter by repealed documents (boolean, required, default `false`)
+  - `crawling_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_updated`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_amendment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `publication_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `expiration_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `effective_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `date_of_enactment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `uuid`: Filter by UUID (string, optional)
+  - `next_id`: Document id of the first row of the next page, from `pagination.next_id`. Omit on the first page (number, optional)
+  - `include_total`: Include total count in the response (boolean, required, default `false`)
   - `title`: Filter by title (string, optional)
-  - `section_title`: Filter by section title (string, optional)
-  - `url`: Filter by URL (string, optional)
-  - `status`: Filter by status (string, optional)
-  - `crawling_date`: Filter by crawling date (string, optional)
-  - `last_updated`: Filter by last updated date (string, optional)
-  - `last_amendment`: Filter by last amendment date (string, optional)
-  - `publication_date`: Filter by publication date (string, optional)
-  - `expiration_date`: Filter by expiration date (string, optional)
-  - `effective_date`: Filter by effective date (string, optional)
-  - `date_of_enactment`: Filter by date of enactment (string, optional)
-  - `date_of_decision`: Filter by date of decision (string, optional)
-  - `file_data_only`: Return only file-related data (boolean, optional)
-  - `issuing_authority`: Filter by issuing authority (string, optional)
-  - `type_of_authority`: Filter by type of authority (string, optional)
-  - `source_identifier`: Filter by source identifier (string, optional)
-  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
-  - `tag`: Filter by tag (string, optional)
-  - `lang`: Filter by language (string, optional)
+  - `with_empty_data`: Include documents that have no stored Markdown (`markdown` is null). Default omits them (boolean, required, default `false`)
 
-- **get_source_url** - Get a time-limited signed URL to the original source file (PDF, etc.)
-  - `document_id`: Document ID (integer, required)
+- **document_presigned_url** — Return a temporary signed URL to the original source file (PDF or other stored file) for one document. The URL expires.
+  - `uuid`: Document UUID (string, required)
 
-- **get_document_with_version** - Get a specific document at a specific version with full metadata
-  - `document_id`: Document ID (integer, required)
+- **document_version** — Retrieve one document at a specific version, including metadata and both text bodies.
+  - `uuid`: Document UUID (string, required)
   - `version`: Version (integer, required)
 
-- **horizon_scan** - Scan recent legal changes in a jurisdiction — filter by topic, date window, and authority
-  - `iso`: One ISO code e.g. "IE", "NL", "US", etc (string, required)
-  - `since`: Start of date window for the scan (string, optional)
-  - `topic`: Topic or keyword to focus the scan (string, optional)
-  - `date_field`: Which date field to use for the window (string, optional)
-  - `status`: Filter by status (string, optional)
+- **horizon_scan** — Scan recent legal documents in one jurisdiction. Filter by topic, date window, status, and authority.
+  - `iso`: One ISO code, e.g. `IE`, `NL`, `US` (string, required)
+  - `since`: Freshness window. `yesterday`, `today`, `Nd` / `Nh` / `Nw` (e.g. `7d`), or ISO date `YYYY-MM-DD` (string, required, default `yesterday`)
+  - `topic`: Optional filter matched against the title, e.g. `employee monitoring` (string, optional)
+  - `date_field`: Which date to window on. `crawl_date`, `publication_date`, or `last_updated` (string, required, default `crawling_date`)
+  - `status`: Optional filter on status, e.g. `new` or `updated` (string, optional)
+  - `issuing_authority`: Optional filter on issuing authority (string, optional)
+  - `type_of_authority`: Optional filter on type of authority (string, optional)
+  - `include_repealed`: When `false`, drop documents where repealed is true (boolean, required, default `false`)
+  - `max_per_jurisdiction`: Max documents to return per jurisdiction, 1–100 (integer, required, default `20`)
+
+- **evidence_pull** — Return one citation bundle: metadata, permanent `legal_link`, citation template, body, and a temporary source-file URL when one exists.
+  - `iso`: Document's jurisdiction ISO code, e.g. `IE`, `NL`, `US` (string, required)
+  - `uuid`: Document UUID (string, required)
+  - `include_text`: Fetch the full body (boolean, required, default `true`)
+  - `include_source_url`: Fetch a temporary signed URL to the original file where available (boolean, required, default `true`)
+  - `text_format`: `markdown` (preserves structure) or `plain` (string, required, default `markdown`)
+
+- **search** — Search legal documents with OpenSearch. Returns matching documents and their metadata. Use `list_documents` to browse with structured filters and cursor pagination.
+  - `iso`: Filter by Jurisdiction ISO code (e.g. 'US') (string, required)
+  - `limit`: Page size. Default 20, maximum 100 (integer, optional)
+  - `portal`: Filter by portal name (string, optional)
+  - `portal_id`: Filter by portal ID (number, optional)
+  - `lang`: Exact portal language name, for example English. Filters the portal, not the document language (string, optional)
+  - `status`: Filter by document status (string, optional)
+  - `url`: Filter by document URL (string, optional)
+  - `is_repealed`: Filter by repealed documents (boolean, required, default `false`)
+  - `crawling_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_updated`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `last_amendment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `publication_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `expiration_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `effective_date`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `date_of_enactment`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
+  - `uuid`: Filter by UUID (string, optional)
+  - `next_id`: Document id of the first row of the next page, from `pagination.next_id`. Omit on the first page (number, optional)
+  - `include_total`: Include total count in the response (boolean, required, default `false`)
+  - `file_data_only`: Filter by file data only (boolean, required, default `false`)
+  - `version`: Filter by version (string, optional)
+  - `date_of_decision`: `YYYY-MM-DD`, or a range `YYYY-MM-DD-to-YYYY-MM-DD` (string, optional)
   - `issuing_authority`: Filter by issuing authority (string, optional)
   - `type_of_authority`: Filter by type of authority (string, optional)
-  - `include_repealed`: Include repealed documents (boolean, optional)
-  - `max_per_jurisdiction`: Maximum results per jurisdiction (integer, optional)
-
-- **evidence_pull** - Get full citation chain for a document — metadata, legal link, source URL, and body text
-  - `iso`: Document's jurisdiction ISO code, e.g. 'IE', 'NL', 'US', etc (string, required)
-  - `document_id`: Numeric document_id from any listing/search tool (integer, required)
-  - `include_text`: Include document body text (boolean, optional)
-  - `include_source_url`: Include signed source URL (boolean, optional)
-  - `text_format`: Format for included text (e.g. markdown or plain) (string, optional)
+  - `source_identifier`: Filter by source identifier (string, optional)
+  - `source_secondary_identifier`: Filter by secondary source identifier (string, optional)
+  - `tag`: Filter by tag (string, optional)
+  - `issuing_authority_tags`: Filter by issuing authority tags (array of strings, optional)
+  - `keyword`: Search text matched against the heading and the body. Omit it to list by filters only, newest document id first (string, optional)
 
 All tools are read-only. OAuth tokens are issued with scope `mcp:tools:read`. Tool listing is public; tool calls require authentication.
 
