@@ -1,0 +1,27 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "lawstronaut",
+  "displayName": "Lawstronaut-Legal-Research",
+  "version": "0.1.0",
+  "description": "Search legislation, regulations, and court decisions across jurisdictions, and retrieve source documents for legal research directly in Antigravity.",
+  "logo": "assets/lawstronaut-icon.png",
+  "suggestedPrompts": [
+    "Show me which jurisdictions I can search with Lawstronaut.",
+    "Find recent UK court decisions on data protection and link to the source judgments.",
+    "Find the official text of the EU AI Act and link to the source."
+  ],
+  "author": {
+    "name": "Lawstronaut",
+    "url": "https://lawstronaut.com"
+  },
+  "homepage": "https://lawstronaut.com/mcp",
+  "repository": "https://github.com/Lawstronaut-FZCO/lawstronaut-mcp",
+  "keywords": [
+    "legal",
+    "regulations",
+    "legal database",
+    "legal-research",
+    "legislation",
+    "case-law"
+  ]
+}

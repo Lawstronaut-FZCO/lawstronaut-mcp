@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "search": {
+      "url": "https://mcp.lawstronaut.com",
+      "oauth": {
+        "clientId": "${LAWSTRONAUT_CLIENT_ID}",
+        "clientSecret": "${LAWSTRONAUT_CLIENT_SECRET}"
+      },
+      "variables": [
+        {
+          "name": "LAWSTRONAUT_CLIENT_ID",
+          "title": "Lawstronaut OAuth client ID",
+          "link": "https://dev-portal.filerskeepersapi.co"
+        },
+        {
+          "name": "LAWSTRONAUT_CLIENT_SECRET",
+          "title": "Lawstronaut OAuth client secret",
+          "link": "https://dev-portal.filerskeepersapi.co"
+        }
+      ]
+    }
+  }
+}
